@@ -7,15 +7,37 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii\data\BaseDataProvider;
 
+/**
+ * RESTDataProvider implements a data provider based on a REST service.
+ *
+ * RESTDataProvider will provide the data after sorting and/or pagination.
+ * You may configure the [[sort]] and [[pagination]] properties to
+ * customize the sorting and pagination behaviors.
+ *
+ * The [[modelClass]] property contains must be a RestModel class.
+ *
+ * RESTDataProvider may be used in the following way:
+ *
+ * ```php
+ * $provider = new RESTDataProvider([
+ *     'modelClass' => [[modelClass]]::className(),
+ *     'allModels' => $query->from('post')->all(),
+ *     'sort' => [
+ *         'attributes' => ['username', 'description'],
+ *     ],
+ *     'pagination' => [
+ *         'pageSize' => 10,
+ *     ],
+ * ]);
+ *
+ * $provider->addFilter('username', $this->username);
+ * $provider->addFilter('description', $this->description, $strict = false);
+ * ```
+ *
+ * @author Oriol Teixidó <oriol.teixido@gmail.com>
+ */
 class RESTDataProvider extends BaseDataProvider
 {
-    /**
-     * @var string the column name that is used as the key of the data models.
-     * If this is not set, the index of the [[models]] array will be used.
-     * @see getKeys()
-     */
-    public $key;
-
     /**
      * @var string the name of the [[yii\base\Model|Model]] class that will be represented.
     */
@@ -53,13 +75,15 @@ class RESTDataProvider extends BaseDataProvider
      */
     protected function prepareKeys($models)
     {
-        if ($this->key !== null) {
+        $modelClass = $this->modelClass;
+        $key = $modelClass::primaryKey();
+        if ($key !== null) {
             $keys = [];
             foreach ($models as $model) {
-                if (is_string($this->key)) {
-                    $keys[] = $model[$this->key];
+                if (is_string($key)) {
+                    $keys[] = $model[$key];
                 } else {
-                    $keys[] = call_user_func($this->key, $model);
+                    $keys[] = call_user_func($key, $model);
                 }
             }
             return $keys;
