@@ -1,0 +1,21 @@
+{
+    "name": "caminstech/yii2-rest",
+    "description": "Components to use a REST backend on Yii2 applications",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Oriol Teixidó",
+            "email": "oriol.teixido@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "caminstech\\rest\\": ""
+        }
+    }
+}
