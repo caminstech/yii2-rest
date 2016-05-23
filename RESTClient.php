@@ -46,8 +46,9 @@ class RESTClient {
         Yii::trace("RESTClient::method($method, $url)");
 
         $curl = curl_init($url);
-        if (!empty($this->username) || !empty($this->password))
+        if (!empty($this->username) || !empty($this->password)) {
             curl_setopt($curl, CURLOPT_USERPWD, $this->username.':'.$this->password);
+        }
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, ($this->sslVerify ? 2 : 0));
